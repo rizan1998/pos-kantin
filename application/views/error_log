@@ -1,0 +1,27 @@
+[31-Oct-2022 11:17:15 Asia/Jakarta] PHP Fatal error:  Call to undefined function mysqli_init() in /home/u8068920/pos.klinikkeluarga.com/system/database/drivers/mysqli/mysqli_driver.php on line 125
+[31-Oct-2022 11:18:10 Asia/Jakarta] PHP Fatal error:  Call to undefined function mysqli_init() in /home/u8068920/pos.klinikkeluarga.com/system/database/drivers/mysqli/mysqli_driver.php on line 125
+[31-Oct-2022 11:18:41 Asia/Jakarta] PHP Fatal error:  Call to undefined function mysqli_init() in /home/u8068920/pos.klinikkeluarga.com/system/database/drivers/mysqli/mysqli_driver.php on line 125
+[31-Oct-2022 11:18:42 Asia/Jakarta] PHP Fatal error:  Call to undefined function mysqli_init() in /home/u8068920/pos.klinikkeluarga.com/system/database/drivers/mysqli/mysqli_driver.php on line 125
+[31-Oct-2022 11:18:42 Asia/Jakarta] PHP Fatal error:  Call to undefined function mysqli_init() in /home/u8068920/pos.klinikkeluarga.com/system/database/drivers/mysqli/mysqli_driver.php on line 125
+[31-Oct-2022 11:19:47 Asia/Jakarta] PHP Fatal error:  Call to undefined function mysqli_init() in /home/u8068920/pos.klinikkeluarga.com/system/database/drivers/mysqli/mysqli_driver.php on line 125
+[31-Oct-2022 11:19:50 Asia/Jakarta] PHP Fatal error:  Call to undefined function mysqli_init() in /home/u8068920/pos.klinikkeluarga.com/system/database/drivers/mysqli/mysqli_driver.php on line 125
+[31-Oct-2022 11:21:28 Asia/Jakarta] PHP Fatal error:  Call to undefined function mysqli_init() in /home/u8068920/pos.klinikkeluarga.com/system/database/drivers/mysqli/mysqli_driver.php on line 125
+[31-Oct-2022 11:21:44 Asia/Jakarta] PHP Fatal error:  Call to undefined function mysqli_init() in /home/u8068920/pos.klinikkeluarga.com/system/database/drivers/mysqli/mysqli_driver.php on line 125
+[31-Oct-2022 11:24:04 Asia/Jakarta] PHP Fatal error:  Call to undefined function mysqli_init() in /home/u8068920/pos.klinikkeluarga.com/system/database/drivers/mysqli/mysqli_driver.php on line 136
+[31-Oct-2022 11:25:17 Asia/Jakarta] PHP Fatal error:  Call to undefined function mysqli_init() in /home/u8068920/pos.klinikkeluarga.com/system/database/drivers/mysqli/mysqli_driver.php on line 136
+[31-Oct-2022 11:25:18 Asia/Jakarta] PHP Fatal error:  Call to undefined function mysqli_init() in /home/u8068920/pos.klinikkeluarga.com/system/database/drivers/mysqli/mysqli_driver.php on line 136
+[31-Oct-2022 11:25:46 Asia/Jakarta] PHP Fatal error:  Call to undefined function mysqli_init() in /home/u8068920/pos.klinikkeluarga.com/system/database/drivers/mysqli/mysqli_driver.php on line 136
+[31-Oct-2022 11:25:47 Asia/Jakarta] PHP Fatal error:  Call to undefined function mysqli_init() in /home/u8068920/pos.klinikkeluarga.com/system/database/drivers/mysqli/mysqli_driver.php on line 136
+[31-Oct-2022 11:25:47 Asia/Jakarta] PHP Fatal error:  Call to undefined function mysqli_init() in /home/u8068920/pos.klinikkeluarga.com/system/database/drivers/mysqli/mysqli_driver.php on line 136
+[31-Oct-2022 11:25:48 Asia/Jakarta] PHP Fatal error:  Call to undefined function mysqli_init() in /home/u8068920/pos.klinikkeluarga.com/system/database/drivers/mysqli/mysqli_driver.php on line 136
+[31-Oct-2022 11:25:48 Asia/Jakarta] PHP Fatal error:  Call to undefined function mysqli_init() in /home/u8068920/pos.klinikkeluarga.com/system/database/drivers/mysqli/mysqli_driver.php on line 136
+[31-Oct-2022 11:25:48 Asia/Jakarta] PHP Fatal error:  Call to undefined function mysqli_init() in /home/u8068920/pos.klinikkeluarga.com/system/database/drivers/mysqli/mysqli_driver.php on line 136
+[31-Oct-2022 11:25:49 Asia/Jakarta] PHP Fatal error:  Call to undefined function mysqli_init() in /home/u8068920/pos.klinikkeluarga.com/system/database/drivers/mysqli/mysqli_driver.php on line 136
+[31-Oct-2022 11:27:51 Asia/Jakarta] PHP Fatal error:  Can't use method return value in write context in /home/u8068920/pos.klinikkeluarga.com/application/modules/administrator/models/Debt_model.php on line 44
+[31-Oct-2022 11:29:54 Asia/Jakarta] PHP Fatal error:  Can't use method return value in write context in /home/u8068920/pos.klinikkeluarga.com/application/modules/administrator/models/Debt_model.php on line 119
+[02-Nov-2022 08:11:18 Asia/Jakarta] PHP Fatal error:  Can't use method return value in write context in /home/u8068920/pos.klinikkeluarga.com/application/modules/administrator/models/Debt_model.php on line 44
+[02-Nov-2022 08:12:29 Asia/Jakarta] PHP Fatal error:  Can't use method return value in write context in /home/u8068920/pos.klinikkeluarga.com/application/modules/administrator/models/Debt_model.php on line 44
+[30-Nov-2022 10:35:31 Asia/Jakarta] PHP Fatal error:  Call to a member function result() on a non-object in /home/u8068920/pos.klinikkeluarga.com/application/modules/administrator/models/Product_model.php on line 63
+[30-Nov-2022 10:35:34 Asia/Jakarta] PHP Fatal error:  Call to a member function result() on a non-object in /home/u8068920/pos.klinikkeluarga.com/application/modules/administrator/models/Product_model.php on line 63
+[30-Nov-2022 10:35:34 Asia/Jakarta] PHP Fatal error:  Call to a member function result() on a non-object in /home/u8068920/pos.klinikkeluarga.com/application/modules/administrator/models/Product_model.php on line 63
+[30-Nov-2022 10:35:39 Asia/Jakarta] PHP Fatal error:  Call to a member function result() on a non-object in /home/u8068920/pos.klinikkeluarga.com/application/modules/administrator/models/Product_model.php on line 63
