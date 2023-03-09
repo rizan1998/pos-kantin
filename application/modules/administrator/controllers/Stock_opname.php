@@ -14,6 +14,7 @@ class Stock_opname extends CI_Controller
         $this->load->model('sistem_model', 'Sistem');
         $this->load->model('stock_model');
         $this->load->model('stockopname_model');
+        $this->load->model('sistem_model');
 
         $this->id_user = $this->session->userdata('id_user');
         $this->active = 'stockopname';
@@ -35,18 +36,35 @@ class Stock_opname extends CI_Controller
     public function ajx_data_stockopname()
     {
         $list = $this->stockopname_model->get_datatables();
+        $category = $this->sistem_model->_get('category');
+
         $data = array();
         $no = $_POST['start'];
 
         foreach ($list as $field) {
             $id = $field->id;
+
+            $categoryOption = '';
+            foreach ($category as $ctgry) {
+                $categoryOption .= "<option data-stokOpnameId='" . $id . "' value='" . $ctgry['inc_id'] . "' >" . $ctgry["name"] . "</option>";
+            }
+
             if ($field->status == 1) {
                 $status = '<span class="badge badge-warning">Belum Selesai</span>';
                 $link = '<button type="button" class="btn btn-sm btn-warning" idatr="' . $id . '" id="trans"><i class="fa fa-sign-out"></i></button>';
                 $link .= '&nbsp; <button type="button" class="btn btn-sm btn-danger" idatr="' . $id . '" id="delete"><i class="fa fa-close"></i></button>';
             } elseif ($field->status == 2) {
                 $status = '<span class="badge badge-success">Selesai</span>';
-                $link = '<button type="button" class="btn btn-sm btn-default" idatr="' . $id . '" id="details"><i class="fa fa-eye"></i></button>';
+                $link = '
+                <div class="input-group">
+                <button type="button" class="btn btn-sm btn-default " idatr="' . $id . '" id="details">
+                    <i class="fa fa-eye"></i>
+                </button>
+                <select class="form-control categorySelect">
+                ' . $categoryOption . '
+                </select>
+                </div>';
+
             } else {
                 $status = '<span class="badge badge-danger">Batal</span>';
                 $link = "";
@@ -59,7 +77,6 @@ class Stock_opname extends CI_Controller
             $row[] = $field->date_stockopname;
             $row[] = $status;
             $row[] = $link;
-
             $data[] = $row;
         }
 
@@ -184,6 +201,34 @@ class Stock_opname extends CI_Controller
         $this->load->view('stockopname/stockopname_details', $data, false);
     }
 
+    public function stockopname_category_detail($id = "", $category_id = "")
+    {
+
+        $ceks = $this->Sistem->_get_where_id('stockopname', array('id' => $id));
+        if (count($ceks) == 0) {
+            redirect('error');
+        }
+
+        $data['page'] = strtoupper('Transaksi');
+        $data['subpage'] = strtoupper('Barang Masuk');
+        $data['active'] = $this->active;
+        $data['stockopname'] = $ceks;
+        $data['inc_id'] = $ceks['inc_id'];
+        $data['category_id'] = $category_id;
+        $data['item'] = $this->stockopname_model->_item_list_category($ceks['inc_id'], $category_id);
+
+        $this->load->view('stockopname/stockopname_details', $data, false);
+    }
+
+    public function cetak_hasil_so($id = "", $category_id = "")
+    {
+        $data['title'] = 'DATA STOKOPNAME';
+        $ceks = $this->sistem_model->_get_where_id('stockopname', array('inc_id' => $id));
+        $data['tgl_so'] = $ceks['date_stockopname'];
+        $data['items'] = $this->stockopname_model->_item_list_category($id, $category_id);
+        return $this->load->view('stockopname/stockopname_report', $data);
+    }
+
     public function cancel_stockopname($id)
     {
         $ceksNota = $this->Sistem->_get_where_id('stockopname', array('id' => $id));
@@ -212,6 +257,7 @@ class Stock_opname extends CI_Controller
 
         echo json_encode($data);
     }
+
 }
 
 /* End of file stockopname.php */
