@@ -95,7 +95,7 @@ $this->load->view('parts/left_menu_part');
                     if ($roles != 3) :
                     ?>
                         <div class="col-lg-6 hidden-sm text-right">
-                            <button type="button" class="btn btn-outline-info" data-target="#modal-print" data-toggle="modal"><i class="fa fa-print"></i> Cetak struk <?php echo $subpage ?></button>
+                            <button type="button" class="btn btn-outline-info" data-target="#modal-print" data-toggle="modal"><i class="fa fa-print"></i> Cetak Detail <?php echo $subpage ?></button>
                             <button type="button" class="btn btn-outline-info" data-target="#modal-print-penjualan" data-toggle="modal"><i class="fa fa-print"></i> Cetak <?php echo $subpage ?></button>
 
                         </div>
@@ -131,7 +131,7 @@ $this->load->view('parts/left_menu_part');
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Cetak Data Struk <?php echo $subpage ?></h5>
+                <h5 class="modal-title">Cetak Data Detail <?php echo $subpage ?></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

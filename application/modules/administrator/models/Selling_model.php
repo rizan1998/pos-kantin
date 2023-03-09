@@ -23,7 +23,7 @@ class Selling_Model extends CI_Model
                 FROM selling_detail ds
                 LEFT JOIN selling s ON s.inc_id = ds.selling_id
                 LEFT JOIN items i ON ds.items_id = i.inc_id
-                WHERE nota = '$nota'
+                WHERE nota = '$nota' AND s.status != 4
                 GROUP BY i.name
             ");
 

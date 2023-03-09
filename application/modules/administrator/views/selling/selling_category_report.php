@@ -140,8 +140,6 @@ setlocale(LC_ALL, 'IND');
                 <tr>
                     <th style="text-align: center">No</th>
                     <th style="text-align: center" width="">Nama</th>
-                    <th style="text-align: center">Stok awal</th>
-                    <th style="text-align: center">Penambahan</th>
                     <th style="text-align: center">Penjualan</th>
                     <th style="text-align: center">Harga</th>
                     <th style="text-align: center">Total harga</th>
@@ -155,15 +153,10 @@ setlocale(LC_ALL, 'IND');
                 foreach ($list_laporan as $l) {
 
                     $totalHarga = $l['jumlah_penjualan'] * $l['harga_jual'];
-
-
-
                     echo '
                     <tr>
                         <td style="text-align: center">' . $no++ . '</td>
-                        <td style="text-align: right" >' . $l['name'] . '</td>
-                        <td style="text-align: center">' . $l['stock'] . '</td>
-                        <td style="text-align: center">' . $l['jumlah_barang_masuk'] . '</td>
+                        <td style="text-align: left" >' . $l['name'] . '</td>
                         <td style="text-align: center">' . $l['jumlah_penjualan'] . '</td>
                         <td style="text-align: right">Rp.' . curr_format($l['harga_jual']) . '</td>
                         <td style="text-align: right">Rp.' . curr_format($totalHarga) . '</td>
@@ -173,7 +166,7 @@ setlocale(LC_ALL, 'IND');
                 ?>
 
                 <tr>
-                    <th colspan="6" style="text-align: right">TOTAL PENJUALAN</th>
+                    <th colspan="4" style="text-align: right">TOTAL PENJUALAN</th>
 
                     <th style="text-align: right">Rp.<?php echo curr_format($totalBayar) ?></th>
                 </tr>
