@@ -74,6 +74,7 @@ $route['selling/items-category/(:any)'] = 'administrator/selling/items_category/
 $route['transaction-in'] = 'administrator/transaction/index/';
 $route['transaction-form/(:any)'] = 'administrator/transaction/transaction_in_form/$1';
 $route['transaction-indetail/(:any)'] = 'administrator/transaction/transaction_in_details/$1';
+$route['transaction-indetail-datatables']       = 'administrator/transaction/ajx_data_detail_transaction_in/';
 
 $route['stock-opname'] = 'administrator/stock_opname/index/';
 $route['stock-opname-form/(:any)'] = 'administrator/stock_opname/stockopname_form/$1';

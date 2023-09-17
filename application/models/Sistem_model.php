@@ -33,6 +33,12 @@ class Sistem_model extends CI_Model
 		return $this->db->insert($table, $data);
 	}
 
+	function _input_return_id($table, $data)
+	{
+		$this->db->insert($table, $data);
+		return $this->db->insert_id();
+	}
+
 	function _get($table, $order_by = "")
 	{
 

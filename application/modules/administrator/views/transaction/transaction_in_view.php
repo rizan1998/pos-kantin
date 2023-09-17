@@ -74,13 +74,13 @@ $this->load->view('parts/left_menu_part');
                     <div class="col-lg-4 col-md-12">
                         <div class="form-group">
                             <label for="">Tanggal Awal</label>
-                            <input type="text" data-provide="datepicker" data-date-autoclose="true" class="form-control" id="start-date" name="start_date" value="<?php echo date('d/m/Y') ?>">
+                            <input type="text" data-provide="datepicker" data-date-autoclose="true" class="form-control" id="start-date" name="start_date" value="<?php echo date('01/m/Y') ?>">
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-12">
                         <div class="form-group">
                             <label for="">Tanggal Akhir</label>
-                            <input type="text" data-provide="datepicker" data-date-autoclose="true" class="form-control" id="end-date" name="end_date" value="<?php echo date('d/m/Y') ?>">
+                            <input type="text" data-provide="datepicker" data-date-autoclose="true" class="form-control" id="end-date" name="end_date" value="<?php echo date('t/m/Y') ?>">
                         </div>
                     </div>
                     <div class="col-lg-2 col-md-12">

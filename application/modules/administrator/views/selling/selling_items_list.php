@@ -1,21 +1,21 @@
     <table class="table table-hover">
         <tbody>
-        <?php 
+            <?php
             $total = 0;
             $totalitem = 0;
             $discount = 0;
-            if(count($list) == 0 ){
+            if (count($list) == 0) {
                 echo '';
-            }else {
-                foreach($list as $l){
+            } else {
+                foreach ($list as $l) {
                     $harga = $l['price'];
                     echo '<tr>
-                    <td>'.$l['name'].'</td>
-                    <td class="text-center">'.$l['qty'].'</td>
+                    <td>' . $l['name'] . '</td>
+                    <td class="text-center">' . $l['qty'] . '</td>
                     <td class="text-right">
-                    '.curr_format($l['qty'] * $l['price']).
-                    '</td>
-                    <td><a style="color: red" href="'.base_url().'administrator/selling/delete_item_list/'.$l['selling_id'].'/'.$l['items_id'].'"><i class="fa fa-trash"></i></a></td>
+                    ' . curr_format($l['qty'] * $l['price']) .
+                        '</td>
+                    <td><a style="color: red" href="' . base_url() . 'administrator/selling/delete_item_list/' . $l['selling_id'] . '/' . $l['items_id'] . '"><i class="fa fa-trash"></i></a></td>
                     </tr>';
                     $total += $harga * $l['qty'];
                     $totalitem += $l['qty'];
@@ -24,7 +24,7 @@
             }
 
             $totalpembayaran = ($total - $discount);
-        ?>
+            ?>
         </tbody>
     </table>
 
@@ -51,11 +51,11 @@
             </tr>
         </table>
         <div class="btn-group" role="group" aria-label="Basic example" style="width: 100%;">
-            <?php if($total != 0): ?>
+            <?php if ($total != 0) : ?>
                 <button type="button" class="btn btn-primary" style="height: 60px;" onclick="savetransaction()">SIMPAN</button>
                 <button type="button" class="btn btn-warning" style="height: 60px;" data-toggle="modal" data-target="#modal-transaction">BAYAR</button>
-            <?php else: ?>
-                <button type="button" class="btn btn-primary" disabled style="height: 60px;" >SIMPAN</button>
+            <?php else : ?>
+                <button type="button" class="btn btn-primary" disabled style="height: 60px;">SIMPAN</button>
                 <button type="button" class="btn btn-warning" disabled style="height: 60px;" data-toggle="modal" data-target="#modal-transaction">BAYAR</button>
             <?php endif ?>
         </div>
@@ -80,8 +80,8 @@
                                 <td>JENIS PEMBAYARAN</td>
                                 <td colspan="2">
                                     <select name="jenis_pembayaran" id="jenis_pembayaran" class="form-control">
-                                        <?php foreach ($type_paid as $val): ?>
-                                        <option value="<?php echo $val['inc_id']?>"><?php echo $val['name']?></option>
+                                        <?php foreach ($type_paid as $val) : ?>
+                                            <option value="<?php echo $val['inc_id'] ?>"><?php echo $val['name'] ?></option>
                                         <?php endforeach ?>
                                     </select>
                                 </td>

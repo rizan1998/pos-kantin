@@ -1,0 +1,3 @@
+ALTER TABLE transaction_in_detail
+ADD items_sell_id INTEGER
+AFTER price

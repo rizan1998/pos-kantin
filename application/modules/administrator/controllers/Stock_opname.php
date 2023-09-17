@@ -64,7 +64,6 @@ class Stock_opname extends CI_Controller
                 ' . $categoryOption . '
                 </select>
                 </div>';
-
             } else {
                 $status = '<span class="badge badge-danger">Batal</span>';
                 $link = "";
@@ -164,7 +163,6 @@ class Stock_opname extends CI_Controller
         $data['item'] = $this->stockopname_model->_item_list($ceks['inc_id']);
 
         $this->load->view('stockopname/in_list_item', $data, false);
-
     }
 
     public function update_stockopname($id)
@@ -257,7 +255,6 @@ class Stock_opname extends CI_Controller
 
         echo json_encode($data);
     }
-
 }
 
 /* End of file stockopname.php */

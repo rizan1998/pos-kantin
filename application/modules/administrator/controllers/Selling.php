@@ -39,7 +39,7 @@ class Selling extends CI_Controller
         $search = $this->input->get('search');
         $items = $this->stock_model->_get_product_selling($search);
         foreach ($items as $i) {
-            $data[] = array('id' => $i['item_id'], 'text' => $i['name'], 'price_sell' => $i['price_sell']);
+            $data[] = array('id' => $i['item_id'], 'text' => $i['name'] . ' ' . $i['price_sell'], 'price_sell' => $i['price_sell']);
         }
 
         echo json_encode($data);
@@ -80,6 +80,7 @@ class Selling extends CI_Controller
 
         $item_id = $this->input->post('items');
         $qty = $this->input->post('qty');
+        $item_selling_id = $this->input->post('item_selling_id');
 
         $detailSell['selling_id'] = $lastid;
         $detailSell['items_id'] = $item_id;
@@ -89,7 +90,16 @@ class Selling extends CI_Controller
         $detailSell['datetime'] = date('Y-m-d H:i:s');
         $detailSell['id_user'] = $this->id_user;
 
-        $this->Sistem->_input('selling_detail', $detailSell);
+        // $this->Sistem->_input('selling_detail', $detailSell);
+
+        // pengurangan stok di item sell
+        $ceksItemsSelling = $this->Sistem->_get_where_id('items_sell', array('inc_id' => $item_selling_id));
+
+        if ($ceksItemsSelling['stock_item_sell'] > $qty) {
+            $resultStock = $ceksItemsSelling['stock_item_sell'] - $this->input->post('qty');
+            $items['stock_item_sell'] = $resultStock;
+            $this->Sistem->_update('items_sell', $items, array('inc_id' => $item_selling_id));
+        }
 
         // pengurangan stok
         $ceksItems = $this->Sistem->_get_where_id('items', array('inc_id' => $item_id));
@@ -300,22 +310,34 @@ class Selling extends CI_Controller
         $data['title'] = 'DATA PENJUALAN';
 
         $dateSeller = date_format_db(str_replace('-', '/', $date_seller));
-        $category = $this->Sistem->_get_where_id('category', ['id' => $category_id]);
+        $condition = array("id" => $category_id);
+        $category = $this->Sistem->_get_where_id('category', $condition);
         $category_inc_id = $category['inc_id'];
 
         $data['list_penjualan'] = $this->selling_model->_report_list_penjualan_category($dateSeller, $category_inc_id);
 
-        $arrayFinal = [];
+        $arrayFinal = array();
         foreach ($data['list_penjualan'] as $lp) {
             $barangMasuk = $this->selling_model->_report_list_barang_masuk_category($dateSeller, $category_inc_id, $lp['inc_id']);
 
-            $arrayFinal[] = [
-                'name' => $lp['name'],
-                'stock' => $lp['stock'],
-                'harga_jual' => $lp['harga_jual'],
-                'jumlah_penjualan' => $lp['jumlah_penjualan'],
-                'jumlah_barang_masuk' => $barangMasuk['jumlah_barang_masuk']
-            ];
+            array_push(
+                $arrayFinal,
+                array(
+                    'name' => $lp['name'],
+                    'stock' => $lp['stock'],
+                    'harga_jual' => $lp['harga_jual'],
+                    'jumlah_penjualan' => $lp['jumlah_penjualan'],
+                    'jumlah_barang_masuk' => $barangMasuk['jumlah_barang_masuk']
+                )
+            );
+
+            // $arrayFinal[] = [
+            //     'name' => $lp['name'],
+            //     'stock' => $lp['stock'],
+            //     'harga_jual' => $lp['harga_jual'],
+            //     'jumlah_penjualan' => $lp['jumlah_penjualan'],
+            //     'jumlah_barang_masuk' => $barangMasuk['jumlah_barang_masuk']
+            // ];
         }
 
         $data['list_laporan'] = $arrayFinal;
