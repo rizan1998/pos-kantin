@@ -15,7 +15,7 @@
                     <td class="text-right">
                     ' . curr_format($l['qty'] * $l['price']) .
                         '</td>
-                    <td><a style="color: red" href="' . base_url() . 'administrator/selling/delete_item_list/' . $l['selling_id'] . '/' . $l['items_id'] . '"><i class="fa fa-trash"></i></a></td>
+                    <td><a style="color: red" href="' . base_url() . 'administrator/selling/delete_item_list/' . $l['selling_id'] . '/' . $l['item_sell_id'] . '"><i class="fa fa-trash"></i></a></td>
                     </tr>';
                     $total += $harga * $l['qty'];
                     $totalitem += $l['qty'];

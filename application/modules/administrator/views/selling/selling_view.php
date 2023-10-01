@@ -216,7 +216,7 @@ $this->load->view('parts/script_part');
             "price": $("#price-" + items_id).val(),
             "discount": $("#discount-" + items_id).val(),
             "qty": $("#qty-" + items_id).val(),
-            "item_selling_id": $("#item_selling_id-" + items_id).val(),
+            "item_sell_id": $("#item_selling_id-" + items_id).val(),
             "nota": nota
         }
 
@@ -229,7 +229,8 @@ $this->load->view('parts/script_part');
                 var req = JSON.parse(data);
                 if (req.info == "yes") {
                     $("#modal-" + items_id).modal('hide')
-                    setTimeout(list_items_selling(), 6000);
+                    // setTimeout(list_items_selling(), 6000);
+                    window.location.replace('<?= base_url() ?>selling');
                 }
             },
             error: function() {

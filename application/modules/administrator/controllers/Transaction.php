@@ -129,7 +129,7 @@ class Transaction extends CI_Controller
             $val['item_id'] = $id_item;
             $val['unit_id'] = $this->input->post('unit_id');
             $val['type_price'] = $this->input->post('type_price');
-            $val['price_sell'] = $this->input->post('price');
+            $val['price_sell'] = $this->input->post('price_sell');
             $val['discount'] = $this->input->post('discount');
             $val['id_user'] = $this->id_user;
             $val['created'] = date('Y-m-d H:i:s');
@@ -161,7 +161,7 @@ class Transaction extends CI_Controller
         // proses penambahan
         $resultStock = $ceksItems['stock'] + $this->input->post('qty');
         $items['stock'] = $resultStock;
-        $this->Sistem->_update('items', $items, array('inc_id' => $this->input->post('item_id')));
+        $this->Sistem->_update('items', $items, array('inc_id' => $id_item));
 
 
 

@@ -18,14 +18,24 @@ class Selling_Model extends CI_Model
 
     public function list_items($nota)
     {
+        // $query = $this->db->query("
+        //         SELECT ds.inc_id,  ds.selling_id, ds.items_id, s.nota, s.date_nota, i.name, ds.price, sum(ds.qty) qty, SUM(ds.discount) discount
+        //         FROM selling_detail ds
+        //         LEFT JOIN selling s ON s.inc_id = ds.selling_id
+        //         LEFT JOIN items i ON ds.items_id = i.inc_id
+        //         WHERE nota = '$nota' AND s.status != 4
+        //         GROUP BY i.name
+        //     ");
+
         $query = $this->db->query("
-                SELECT ds.inc_id,  ds.selling_id, ds.items_id, s.nota, s.date_nota, i.name, ds.price, sum(ds.qty) qty, SUM(ds.discount) discount
+                SELECT ds.inc_id,  ds.selling_id, ds.items_id, s.nota, s.date_nota, i.name, ds.price, sum(ds.qty) qty, SUM(ds.discount) discount, ts.inc_id as item_sell_id
                 FROM selling_detail ds
                 LEFT JOIN selling s ON s.inc_id = ds.selling_id
                 LEFT JOIN items i ON ds.items_id = i.inc_id
+                LEFT JOIN items_sell ts ON ds.item_sell_id = ts.inc_id
                 WHERE nota = '$nota' AND s.status != 4
-                GROUP BY i.name
-            ");
+                GROUP BY ts.inc_id
+        ");
 
         return $query->result_array();
     }

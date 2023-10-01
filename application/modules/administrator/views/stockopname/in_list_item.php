@@ -1,10 +1,12 @@
-<?php 
-    $no = 1;
-    foreach ($item as $i): ?>
-        <tr>
-            <td><?php echo $no++ ?></td>
-            <td><?php echo $i['name']?></td>
-            <td class="text-center"><?php echo $i['stock_physic']?></td>
+<?php
+$no = 1;
+foreach ($item as $i) : ?>
+    <tr>
+        <td><?php echo $no++ ?></td>
+        <td><?php echo $i['name'] ?></td>
+        <td>Rp. <?php echo $i['price_sell'] ?></td>
+        <td class="text-center"><?php echo $i['stock_physic'] ?></td>
+        <td class="text-center"><?php echo $i['differential'] ?></td>
 
-        </tr>
+    </tr>
 <?php endforeach ?>

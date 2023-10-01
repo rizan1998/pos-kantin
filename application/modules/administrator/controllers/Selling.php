@@ -80,25 +80,17 @@ class Selling extends CI_Controller
 
         $item_id = $this->input->post('items');
         $qty = $this->input->post('qty');
-        $item_selling_id = $this->input->post('item_selling_id');
+        $item_selling_id = $this->input->post('item_sell_id');
 
-        $detailSell['selling_id'] = $lastid;
-        $detailSell['items_id'] = $item_id;
-        $detailSell['price'] = $this->input->post('price');
-        $detailSell['discount'] = $this->input->post('discount');
-        $detailSell['qty'] = $qty;
-        $detailSell['datetime'] = date('Y-m-d H:i:s');
-        $detailSell['id_user'] = $this->id_user;
-
-        // $this->Sistem->_input('selling_detail', $detailSell);
 
         // pengurangan stok di item sell
         $ceksItemsSelling = $this->Sistem->_get_where_id('items_sell', array('inc_id' => $item_selling_id));
 
+
         if ($ceksItemsSelling['stock_item_sell'] > $qty) {
             $resultStock = $ceksItemsSelling['stock_item_sell'] - $this->input->post('qty');
-            $items['stock_item_sell'] = $resultStock;
-            $this->Sistem->_update('items_sell', $items, array('inc_id' => $item_selling_id));
+            $itemSell['stock_item_sell'] = $resultStock;
+            $this->Sistem->_update('items_sell', $itemSell, array('inc_id' => $item_selling_id));
         }
 
         // pengurangan stok
@@ -110,6 +102,18 @@ class Selling extends CI_Controller
             $items['stock'] = $resultStock;
             $this->Sistem->_update('items', $items, array('inc_id' => $item_id));
         }
+
+
+        $detailSell['selling_id'] = $lastid;
+        $detailSell['items_id'] = $item_id;
+        $detailSell['price'] = $this->input->post('price');
+        $detailSell['discount'] = $this->input->post('discount');
+        $detailSell['qty'] = $qty;
+        $detailSell['datetime'] = date('Y-m-d H:i:s');
+        $detailSell['id_user'] = $this->id_user;
+        $detailSell['item_sell_id'] = $this->input->post('item_sell_id');
+
+        $this->Sistem->_input('selling_detail', $detailSell);
 
         $data['info'] = 'yes';
         echo json_encode($data);
@@ -264,9 +268,10 @@ class Selling extends CI_Controller
         echo json_encode($data);
     }
 
-    public function delete_item_list($selling_id, $items_id)
+    public function delete_item_list($selling_id, $item_sell_id)
     {
-        $cekSellingItem = $this->Sistem->_get_wheres('selling_detail', array('selling_id' => $selling_id, 'items_id' => $items_id));
+
+        $cekSellingItem = $this->Sistem->_get_wheres('selling_detail', array('selling_id' => $selling_id, 'item_sell_id' => $item_sell_id));
 
         $qty = 0;
         foreach ($cekSellingItem as $sel) {
@@ -274,16 +279,21 @@ class Selling extends CI_Controller
         }
 
         // proses pengurangan
+        $cekItemSell = $this->Sistem->_get_where_id('items_sell', array('inc_id' => $item_sell_id));
+        $items_id = $cekItemSell['item_id'];
         $ceksItems = $this->Sistem->_get_where_id('items', array('inc_id' => $items_id));
-        // echo json_encode($qty);
-        // echo json_encode($ceksItems['stock']);
-        // die;
 
+        // update item sell stock
+        $resultStockItemSell = $cekItemSell['stock_item_sell'] + $qty;
+        $itemSell['stock_item_sell'] = $resultStockItemSell;
+        $this->Sistem->_update('items_sell', $itemSell, array('inc_id' => $item_sell_id));
+
+        // update item atau stock keseluruhan
         $resultStock = $ceksItems['stock'] + $qty;
         $items['stock'] = $resultStock;
         $this->Sistem->_update('items', $items, array('inc_id' => $items_id));
 
-        $this->Sistem->_delete('selling_detail', array('selling_id' => $selling_id, 'items_id' => $items_id));
+        $this->Sistem->_delete('selling_detail', array('selling_id' => $selling_id, 'item_sell_id' => $item_sell_id));
 
         redirect('/selling');
     }

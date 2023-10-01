@@ -122,6 +122,15 @@ class Stock_opname extends CI_Controller
         $this->load->view('stockopname/stockopname_form', $data, false);
     }
 
+    public function stockopname_list_item_sell($id_item)
+    {
+        // $item_sell = $this->Sistem->_get_wheres('items_sell', array('item_id' => $id_item));
+        $items_sell = $this->stockopname_model->items_sell($id_item);
+        $data['data'] = $items_sell;
+        $data['info'] = 'yes';
+        echo json_encode($data);
+    }
+
     public function stockopname_add_item($id)
     {
         $ceks = $this->Sistem->_get_where_id('stockopname', array('id' => $id));
@@ -130,24 +139,67 @@ class Stock_opname extends CI_Controller
             redirect('error');
         }
 
-        $items_id = $this->input->post('item_id');
-        $ceksItems = $this->Sistem->_get_where_id('items', array('inc_id' => $items_id));
+        $json_data = file_get_contents('php://input');
+        $data = json_decode($json_data, true);
+
+        $totalStock = 0;
+        foreach ($data as $stock) {
+            $totalStock += $stock['stock_physic'];
+        }
+
+        foreach ($data as $d) {
+            $id_item_sell = $d['id_item_sell'];
+            $stock_physic = $d['stock_physic'];
+            $info = $d['info'];
+            $id_item = $d['id_item'];
+
+            $ceksItemsSell = $this->Sistem->_get_where_id('items_sell', array('inc_id' => $id_item_sell));
+            $stockSystem = $ceksItemsSell['stock_item_sell'];
+
+            $itemsSell['stock_item_sell'] = $stock_physic;
+            $this->Sistem->_update('items_sell', $itemsSell, array('inc_id' => $id_item_sell));
+
+            $inp['items_id'] = $id_item;
+            $inp['stockopname_id'] = $ceks['inc_id'];
+            $inp['stock_physic'] = $stock_physic;
+
+            $inp['stock_system'] = $stock_physic;
+            $inp['differential'] = $stock_physic - $stockSystem;
+            $inp['stock_item_sell'] = $stock_physic;
+            $inp['info'] = $info;
+            $this->Sistem->_input('stockopname_detail', $inp);
+        }
+
+
+        // stock keseluruhan
+        $ceksItems = $this->Sistem->_get_where_id('items', array('inc_id' => $id_item));
         $stockSystem = $ceksItems['stock'];
 
-        $inp['items_id'] = $items_id;
-        $inp['stockopname_id'] = $ceks['inc_id'];
-        $inp['stock_physic'] = $this->input->post('stock_physic');
+        // proses pengurangan stock keseluruhan
+        $items['stock'] = $totalStock;
+        $this->Sistem->_update('items', $items, array('inc_id' => $id_item));
 
-        $inp['stock_system'] = $stockSystem;
-        $inp['differential'] = $this->input->post('stock_physic') - $stockSystem;
-        $inp['info'] = $this->input->post('info');
-        $this->Sistem->_input('stockopname_detail', $inp);
+
+
+        // $items_id = $this->input->post('item_id');
+        // $ceksItems = $this->Sistem->_get_where_id('items', array('inc_id' => $items_id));
+        // $stockSystem = $ceksItems['stock'];
+
+        // $inp['items_id'] = $items_id;
+        // $inp['stockopname_id'] = $ceks['inc_id'];
+        // $inp['stock_physic'] = $this->input->post('stock_physic');
+
+        // $inp['stock_system'] = $stockSystem;
+        // $inp['differential'] = $this->input->post('stock_physic') - $stockSystem;
+        // $inp['info'] = $this->input->post('info');
+        // $this->Sistem->_input('stockopname_detail', $inp);
 
         // proses pengurangan
 
-        $resultStock = $this->input->post('stock_physic');
-        $items['stock'] = $resultStock;
-        $this->Sistem->_update('items', $items, array('inc_id' => $this->input->post('item_id')));
+        // $resultStock = $this->input->post('stock_physic');
+        // $items['stock'] = $resultStock;
+        // $this->Sistem->_update('items', $items, array('inc_id' => $this->input->post('item_id')));
+
 
         $data['info'] = 'yes';
         echo json_encode($data);
@@ -194,6 +246,7 @@ class Stock_opname extends CI_Controller
         $data['subpage'] = strtoupper('Barang Masuk');
         $data['active'] = $this->active;
         $data['stockopname'] = $ceks;
+        $data['category'] = false;
         $data['item'] = $this->stockopname_model->_item_list($ceks['inc_id']);
 
         $this->load->view('stockopname/stockopname_details', $data, false);
@@ -211,6 +264,7 @@ class Stock_opname extends CI_Controller
         $data['subpage'] = strtoupper('Barang Masuk');
         $data['active'] = $this->active;
         $data['stockopname'] = $ceks;
+        $data['category'] = true;
         $data['inc_id'] = $ceks['inc_id'];
         $data['category_id'] = $category_id;
         $data['item'] = $this->stockopname_model->_item_list_category($ceks['inc_id'], $category_id);
@@ -223,7 +277,54 @@ class Stock_opname extends CI_Controller
         $data['title'] = 'DATA STOKOPNAME';
         $ceks = $this->sistem_model->_get_where_id('stockopname', array('inc_id' => $id));
         $data['tgl_so'] = $ceks['date_stockopname'];
-        $data['items'] = $this->stockopname_model->_item_list_category($id, $category_id);
+        $stockopname_detail = $this->stockopname_model->_item_list_category($id, $category_id);
+
+        $date = $ceks['date_stockopname'];
+        $test = $this->stockopname_model->get_selling_total(25, $data['tgl_so']);
+
+
+        // echo json_encode($data['items']);
+        $stock_awal  = 0;
+        $data['items'] = [];
+        foreach ($stockopname_detail as $stckopname_dtl) {
+            // $items = $this->Sistem->_get_where_id('items', ['inc_id' => $stckopname_dtl['items_id']]);
+            $total_selling = $this->stockopname_model->get_selling_total($stckopname_dtl['items_sell_id'], $data['tgl_so']);
+            $total_transaction_in = $this->stockopname_model->get_transaction_in_total($stckopname_dtl['items_sell_id'], $data['tgl_so']);
+            $items_sell = $this->Sistem->_get_where_id('items_sell', ['inc_id' => $stckopname_dtl['items_sell_id']]);
+
+            $total_penjualan = $total_selling['total_penjualan'];
+            $total_barang_masuk = $total_transaction_in['total_barang_masuk'];
+            $stock_awal = $items_sell['stock_item_sell'] + $total_penjualan - $total_barang_masuk;
+
+
+
+            $data['items'][] = [
+                'name' => $stckopname_dtl['name'],
+                'stock_physic' => $stckopname_dtl['stock_physic'],
+                'stock_system' => $stckopname_dtl['stock_system'],
+                'differential' => $stckopname_dtl['differential'],
+                'info' => $stckopname_dtl['info'],
+                'inc_id' => $stckopname_dtl['inc_id'],
+                'id_detail' => $stckopname_dtl['id_detail'],
+                'category_id' => $stckopname_dtl['category_id'],
+                'price' => $stckopname_dtl['price'],
+                'unit_name' => $stckopname_dtl['unit_name'],
+                'total_penjualan' => $stckopname_dtl['total_penjualan'],
+                'qty' => $stckopname_dtl['qty'],
+                'harga_beli' => $stckopname_dtl['harga_beli'],
+                'items_sell_id' => $stckopname_dtl['items_sell_id'],
+                'stock_awal' => $stock_awal,
+                'total_barang_masuk' => $total_barang_masuk
+            ];
+
+
+            // echo $total_transaction_in['total_transaction_in'];
+            // echo $total_selling['total_penjualan'];
+            // echo "<br>";
+        }
+        // var_dump($data['items']);
+        // die;
+
         return $this->load->view('stockopname/stockopname_report', $data);
     }
 
