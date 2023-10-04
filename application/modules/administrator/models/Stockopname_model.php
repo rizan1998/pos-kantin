@@ -216,6 +216,7 @@ class Stockopname_Model extends CI_Model
         $this->db->from('items_sell ts');
         $this->db->join('items i', 'ts.item_id = i.inc_id', 'left');
         $this->db->where('i.inc_id', $item_id);
+        $this->db->where('ts.ket !=', 'DELETE');
         $this->db->group_by('ts.inc_id');
         $query = $this->db->get();
         return $query->result_array();
