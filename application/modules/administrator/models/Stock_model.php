@@ -99,6 +99,19 @@ class Stock_model extends CI_Model
         return $query->result_array();
     }
 
+    function _get_product($like = "")
+    {
+        $this->db->select('i.inc_id as item_id, i.inc_id, i.code, i.name, u.inc_id as unit_id, u.name as unit_name');
+        $this->db->from('items i');
+        $this->db->join('unit u', 'i.unit_id = u.inc_id', 'left');
+        $this->db->like('i.name', "$like");
+        // $this->db->where('i.type_price', 1); //retail
+
+
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
     function _get_product_selling($like = "")
     {
         $this->db->select('isell.id, isell.inc_id, isell.item_id, i.code, i.name, u.inc_id as unit_id, u.name as unit_name, discount, price_sell, type_price');
@@ -106,7 +119,6 @@ class Stock_model extends CI_Model
         $this->db->join('items i', 'isell.item_id = i.inc_id', 'left');
         $this->db->join('unit u', 'i.unit_id = u.inc_id', 'left');
         $this->db->like('i.name', "$like");
-        $this->db->where('isell.type_price', 1); //retail
 
 
         $query = $this->db->get();

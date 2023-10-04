@@ -148,8 +148,8 @@ setlocale(LC_ALL, 'IND');
                     <th>Nilai</th>
                     <th>Penjualan</th>
                     <th>Nilai</th>
-                    <th>Stok Fisik</th>
                     <th>Stok Sistem</th>
+                    <th>Stok Fisik</th>
                     <th>Selisih</th>
                     <th>total</th>
                 </tr>
@@ -194,8 +194,8 @@ setlocale(LC_ALL, 'IND');
 
                     echo '
                      <tr>
-              <td>' . $no++ . '</td>
-              <td>' . $item["name"] . '</td>
+              <td>' . $no++ . '-' . $item['items_sell_id'] . '</td>
+              <td>' . $item["name"] . 'barang masuk = ' . $item['stock_awal'] . '</td>
               <td> ' . $item["unit_name"] . '</td>
               <td>Rp. ' . $item['harga_beli'] . '</td>
               <td>' . $item['stock_awal'] . '</td>|
@@ -204,8 +204,8 @@ setlocale(LC_ALL, 'IND');
               <td>Rp. ' . $nilai_barang_masuk . '</td>
               <td>' . $item['total_penjualan'] . '</td> 
               <td>Rp. ' . $nilai_harga_jual . '</td>
-              <td class="text-center">' . $item['stock_physic'] . '</td>
               <td class="text-center">' . $item['stock_system'] . '</td>
+              <td class="text-center">' . $item['stock_physic'] . '</td>
               <td class="text-center">' . $dif . '</td>
               <td style="text-align: right">Rp ' . number_format($total_harga, 0, ',', '.') . '</td>
           </tr>';
@@ -224,7 +224,7 @@ setlocale(LC_ALL, 'IND');
                     <td></td>
                     <th align="left">Rp. <?php echo number_format($total_penjualan, 0, ',', '.') ?></th>
                     <th colspan="2"></th>
-                    <th style="text-align: right" align="left">Rp. <?php echo ' ' . number_format($total_minus, 0, ',', '.') ?></th>
+                    <th align="left">Rp. <?php echo ' ' . number_format($total_minus, 0, ',', '.') ?></th>
                     <th style="text-align: right" align="left">Rp. <?php echo ' ' . number_format($total_harta, 0, ',', '.') ?></th>
 
                 </tr>

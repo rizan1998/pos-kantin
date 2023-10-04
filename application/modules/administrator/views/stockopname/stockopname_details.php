@@ -72,7 +72,7 @@ $this->load->view('parts/left_menu_part');
     <div class="col-lg-12 col-md-12">
         <div class="card planned_task">
             <div class="header">
-                <h2>DETAIL ITEM <?php echo $subpage ?></h2>
+                <h2>DETAIL ITEM <?php echo $subpage ?> <?= $category; ?></h2>
             </div>
             <div class="body">
                 <div class="table-responsive">
@@ -138,10 +138,18 @@ $this->load->view('parts/script_part');
 <script>
     $(document).ready(function() {
         $("#print").on('click', function() {
-            let stockOpnameId = "<?= $inc_id; ?>";
-            let category_id = '<?= $category_id; ?>';
+            let category = '<?= $category; ?>';
+            if (category == 'ya') {
+                let stockOpnameId = "<?= $inc_id; ?>";
+                let category_id = "<?= $category_id; ?>";
+                window.open('<?php echo base_url() ?>stock-opname-cetak/' + stockOpnameId + "/" + category_id, '_blank');
 
-            window.open('<?php echo base_url() ?>stock-opname-cetak/' + stockOpnameId + "/" + category_id, '_blank');
+            } else {
+                let stockOpnameId = "<?= $inc_id; ?>";
+                let category_id = 0;
+                window.open('<?php echo base_url() ?>stock-opname-cetak/' + stockOpnameId + "/" + category_id, '_blank');
+            }
+
         })
     })
 </script>

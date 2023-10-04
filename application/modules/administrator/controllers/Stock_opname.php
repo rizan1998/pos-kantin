@@ -61,6 +61,7 @@ class Stock_opname extends CI_Controller
                     <i class="fa fa-eye"></i>
                 </button>
                 <select class="form-control categorySelect">
+                <option selected="true" disabled="disabled">Pilih Kategori</option>
                 ' . $categoryOption . '
                 </select>
                 </div>';
@@ -162,8 +163,9 @@ class Stock_opname extends CI_Controller
             $inp['items_id'] = $id_item;
             $inp['stockopname_id'] = $ceks['inc_id'];
             $inp['stock_physic'] = $stock_physic;
+            $inp['items_sell_id'] = $id_item_sell;
 
-            $inp['stock_system'] = $stock_physic;
+            $inp['stock_system'] = $stockSystem;
             $inp['differential'] = $stock_physic - $stockSystem;
             $inp['stock_item_sell'] = $stock_physic;
             $inp['info'] = $info;
@@ -214,6 +216,9 @@ class Stock_opname extends CI_Controller
 
         $data['item'] = $this->stockopname_model->_item_list($ceks['inc_id']);
 
+        // var_dump($data['item']);
+        // die;
+
         $this->load->view('stockopname/in_list_item', $data, false);
     }
 
@@ -246,7 +251,9 @@ class Stock_opname extends CI_Controller
         $data['subpage'] = strtoupper('Barang Masuk');
         $data['active'] = $this->active;
         $data['stockopname'] = $ceks;
-        $data['category'] = false;
+        $data['category'] = 'tidak';
+        $data['inc_id'] = $ceks['inc_id'];
+        $data['category_id'] = null;
         $data['item'] = $this->stockopname_model->_item_list($ceks['inc_id']);
 
         $this->load->view('stockopname/stockopname_details', $data, false);
@@ -264,9 +271,9 @@ class Stock_opname extends CI_Controller
         $data['subpage'] = strtoupper('Barang Masuk');
         $data['active'] = $this->active;
         $data['stockopname'] = $ceks;
-        $data['category'] = true;
+        $data['category'] = 'ya';
         $data['inc_id'] = $ceks['inc_id'];
-        $data['category_id'] = $category_id;
+        $data['category_id'] = $category_id != "" ? $category_id : null;
         $data['item'] = $this->stockopname_model->_item_list_category($ceks['inc_id'], $category_id);
 
         $this->load->view('stockopname/stockopname_details', $data, false);
@@ -274,27 +281,40 @@ class Stock_opname extends CI_Controller
 
     public function cetak_hasil_so($id = "", $category_id = "")
     {
+
         $data['title'] = 'DATA STOKOPNAME';
         $ceks = $this->sistem_model->_get_where_id('stockopname', array('inc_id' => $id));
         $data['tgl_so'] = $ceks['date_stockopname'];
-        $stockopname_detail = $this->stockopname_model->_item_list_category($id, $category_id);
+
+        $stockopname_detail = [];
+        if ($category_id != 0) {
+            $stockopname_detail = $this->stockopname_model->_item_list_category($id, $category_id);
+        } else {
+            $stockopname_detail = $this->stockopname_model->_item_list_all($id);
+        }
 
         $date = $ceks['date_stockopname'];
         $test = $this->stockopname_model->get_selling_total(25, $data['tgl_so']);
 
 
         // echo json_encode($data['items']);
+        // var_dump($stockopname_detail);
         $stock_awal  = 0;
         $data['items'] = [];
         foreach ($stockopname_detail as $stckopname_dtl) {
             // $items = $this->Sistem->_get_where_id('items', ['inc_id' => $stckopname_dtl['items_id']]);
             $total_selling = $this->stockopname_model->get_selling_total($stckopname_dtl['items_sell_id'], $data['tgl_so']);
+
             $total_transaction_in = $this->stockopname_model->get_transaction_in_total($stckopname_dtl['items_sell_id'], $data['tgl_so']);
+
             $items_sell = $this->Sistem->_get_where_id('items_sell', ['inc_id' => $stckopname_dtl['items_sell_id']]);
 
             $total_penjualan = $total_selling['total_penjualan'];
             $total_barang_masuk = $total_transaction_in['total_barang_masuk'];
-            $stock_awal = $items_sell['stock_item_sell'] + $total_penjualan - $total_barang_masuk;
+            $differential = abs($stckopname_dtl['differential']);
+            $total_barang = $items_sell['stock_item_sell'] + $total_penjualan + $differential;
+
+            $stock_awal = $total_barang - $total_barang_masuk;
 
 
 
@@ -322,6 +342,7 @@ class Stock_opname extends CI_Controller
             // echo $total_selling['total_penjualan'];
             // echo "<br>";
         }
+
         // var_dump($data['items']);
         // die;
 
@@ -349,7 +370,7 @@ class Stock_opname extends CI_Controller
     public function get_product()
     {
         $search = $this->input->get('search');
-        $items = $this->stock_model->_get_product_selling($search);
+        $items = $this->stock_model->_get_product($search);
         foreach ($items as $i) {
             $data[] = array('id' => $i['item_id'], 'text' => $i['name'] . " (" . $i['code'] . ")", 'unit' => $i['unit_name']);
         }

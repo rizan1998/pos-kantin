@@ -98,7 +98,7 @@ class Stockopname_Model extends CI_Model
     public function _item_list($stockopname_id)
     {
         $query = $this->db->query("
-        SELECT i.name, ti.stock_physic, ti.stock_system, ti.differential, ti.info, i.inc_id, ti.inc_id AS id_detail, isell.price_sell
+        SELECT i.name, ti.stock_physic, ti.stock_system, ti.differential, ti.info, i.inc_id, ti.inc_id AS id_detail, isell.price_sell, isell.inc_id as item_sell_id
         FROM stockopname_detail ti
         LEFT JOIN items i ON ti.items_id = i.inc_id 
         LEFT JOIN items_sell isell ON ti.items_sell_id = isell.inc_id
@@ -134,6 +134,39 @@ class Stockopname_Model extends CI_Model
         LEFT JOIN selling_detail sd ON isell.inc_id = sd.item_sell_id
         LEFT JOIN transaction_in_detail tid ON ti.items_sell_id = tid.items_sell_id
         WHERE ti.stockopname_id = $stockopname_id AND i.category_id = $category_id
+        GROUP BY ti.inc_id
+            ");
+
+        return $query->result_array();
+    }
+
+
+    public function _item_list_all($stockopname_id)
+    {
+        $query = $this->db->query("
+        SELECT i.name,
+        ti.stock_physic,
+        ti.stock_system,
+        ti.differential,
+        ti.info,
+        i.inc_id,
+        ti.inc_id as id_detail,
+        i.category_id,
+        isell.price_sell as price,
+        u.name as unit_name,
+        SUM(sd.qty) as total_penjualan,
+        sd.qty,
+        isell.inc_id as items_sell_id,
+        tid.price as harga_beli
+
+        FROM stockopname_detail ti
+        LEFT JOIN items i ON ti.items_id = i.inc_id
+        LEFT JOIN category c ON i.category_id = c.id
+        LEFT JOIN items_sell isell ON ti.items_sell_id = isell.inc_id
+        LEFT JOIN unit u ON isell.unit_id = u.inc_id
+        LEFT JOIN selling_detail sd ON isell.inc_id = sd.item_sell_id
+        LEFT JOIN transaction_in_detail tid ON ti.items_sell_id = tid.items_sell_id
+        WHERE ti.stockopname_id = $stockopname_id
         GROUP BY ti.inc_id
             ");
 

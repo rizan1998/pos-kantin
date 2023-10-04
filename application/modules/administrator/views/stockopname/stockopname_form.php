@@ -322,8 +322,8 @@ $this->load->view('parts/left_menu_part');
                                 </td>
                                 <td>
                                     <input class="form-control" readonly value="${item.name}" />
-                                    <input name="id_item_sell_${increment}" id="id_item_sell_${increment}" type="text" value="${item.id_item_sell}" /> 
-                                    <input name="id_item" value="${item.id_item}" id="id_item_${increment}" />
+                                    <input name="id_item_sell_${increment}" id="id_item_sell_${increment}" type="hidden" value="${item.id_item_sell}" /> 
+                                    <input name="id_item" type="hidden" value="${item.id_item}" id="id_item_${increment}" />
                                 </td>
                                 <td>
                                 <div class="input-group">
