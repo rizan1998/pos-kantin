@@ -596,6 +596,7 @@ class Product extends CI_Controller
             data-type_price="' . $field->type_price . '"
             data-name="' . $field->name . '"
             data-unit_id="' . $field->unit_id . '"
+            data-purchase_price="' . $field->purchase_price . '"
             ><i class="fa fa-plus-circle" aria-hidden="true"></i></button></div>';
             $no++;
             $row = array();

@@ -111,9 +111,10 @@ class Product_model extends CI_Model
     private function _get_datatables_items_sell_query()
     {
         $this->db->from('items_sell is');
-        $this->db->select('is.*, is.inc_id as id, i.name, un.name as unit_name');
+        $this->db->select('is.*, is.inc_id as id, i.name, un.name as unit_name, tid.price as purchase_price');
         $this->db->join('items i', 'is.item_id = i.inc_id', 'left');
         $this->db->join('unit un', 'is.unit_id = un.inc_id', 'left');
+        $this->db->join('transaction_in_detail tid', 'is.inc_id = tid.items_sell_id', 'left');
         $this->db->where("is.ket !=", 'DELETE');
         $this->db->group_by('is.inc_id');
 

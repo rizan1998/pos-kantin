@@ -473,14 +473,16 @@ $this->load->view('parts/script_part');
             let type_price = $(this).data('type_price');
             let unit_id = $(this).data('unit_id');
             let price_sell = $(this).data('price_sell');
+            let purchase_price = $(this).data('purchase_price');
 
-            console.log([id_item, name, type_price, unit_id, price_sell]);
+            // console.log([id_item, name, type_price, unit_id, price_sell]);
 
             $("#id_item").val(id_item);
             $("#name_item").val(name);
             $("#price_sell").val(price_sell);
             $("#type_price").val(type_price);
             $("#unit_id").val(unit_id);
+            $("#price").val(purchase_price);
 
             $("#modal-item-sell").modal('hide');
         });
